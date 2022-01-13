@@ -1,0 +1,24 @@
+﻿
+
+@code {
+
+    //Properties
+    [Parameter]
+    public string APIKey { get; set; }
+
+    [Parameter]
+    public double StartLat { get; set; } = 41.739081;
+
+    [Parameter]
+    public double StartLon { get; set; } = -111.834756;
+
+    [Parameter]
+    public string MapId { get; set; }
+
+    //Methods
+
+    private async void InitializeMap()
+    {
+
+    }
+}
