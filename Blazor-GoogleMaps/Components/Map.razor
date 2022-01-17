@@ -1,24 +1,76 @@
-﻿
-
-@code {
-
-    //Properties
-    [Parameter]
-    public string APIKey { get; set; }
-
-    [Parameter]
-    public double StartLat { get; set; } = 41.739081;
-
-    [Parameter]
-    public double StartLon { get; set; } = -111.834756;
-
-    [Parameter]
-    public string MapId { get; set; }
-
-    //Methods
-
-    private async void InitializeMap()
-    {
-
+﻿@inject IJSRuntime JS
+    
+<style>
+    .map{
+        height: 100%;
+        width: 100%;
     }
-}
+
+</style>
+<div class="map" id="@MapId"></div>
+
+
+    @code {
+
+        //Properties
+        [Parameter]
+        public string APIKey { get; set; }
+
+        [Parameter]
+        public double StartLat { get; set; } = 41.739081;
+
+        [Parameter]
+        public double StartLon { get; set; } = -111.834756;
+
+        [Parameter]
+        public string MapId { get; set; }
+
+        [Parameter]
+        public EventCallback<MapPoint> MapClick { get; set; }
+        [Parameter]
+        public EventCallback<MapPoint> MapDoubleClick { get; set; }
+        [Parameter]
+        public EventCallback<MapPoint> MapRightClick { get; set; }
+
+        private DotNetObjectReference<Map>? objRef;
+
+        //Methods
+
+        private async void InitializeMap()
+        {
+            await JS.InvokeVoidAsync("initMap", MapId, StartLat, StartLon);
+            SetOnclickListeners();
+        }
+
+        [JSInvokable]
+        public async Task MapClicked(double lat, double lon)
+        {
+            await MapClick.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
+        }
+
+        [JSInvokable]
+        public async Task MapDoubleClicked(double lat, double lon)
+        {
+            await MapDoubleClick.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
+        }
+        
+        [JSInvokable]
+        public async Task MapRightClicked(double lat, double lon)
+        {
+            await MapRightClick.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
+        }
+
+        private async void SetOnclickListeners()
+        {
+            objRef = DotNetObjectReference.Create(this);
+            var result = await JS.InvokeAsync<string>("setMapClickListener", MapId, objRef);
+        }
+
+        protected async override Task OnInitializedAsync()
+        {
+            base.OnInitializedAsync();
+
+            await Task.Delay(1);
+            InitializeMap();
+        }
+    }

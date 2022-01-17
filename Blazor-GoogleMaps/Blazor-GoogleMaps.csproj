@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Blazor_GoogleMaps</RootNamespace>
+    <AssemblyName>Blazor-GoogleMaps</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

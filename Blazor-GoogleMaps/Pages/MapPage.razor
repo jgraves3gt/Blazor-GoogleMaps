@@ -1,0 +1,27 @@
+﻿@page "/map"
+
+    <div class="pb-4" style="height: calc(100vh - 3.5rem);">
+        <Map 
+             MapClick="(e) => MapClicked((MapPoint)e)" 
+             MapDoubleClick="(e) => MapDoubleClicked((MapPoint)e)" 
+             MapRightClick="(e) => MapRightClicked((MapPoint)e)"
+             MapId="MapElement"></Map>
+    </div>
+
+    @code {
+
+        private void MapClicked(MapPoint point)
+        {
+            Console.Out.WriteLine($"From Blazor Mouse Clicked - Lat:{point.Lat} | Lon:{point.Lon}");
+        }
+
+        private void MapDoubleClicked(MapPoint point)
+        {
+            Console.Out.WriteLine($"From Blazor Mouse Double Clicked - Lat:{point.Lat} | Lon:{point.Lon}");
+        }
+        
+        private void MapRightClicked(MapPoint point)
+        {
+            Console.Out.WriteLine($"From Blazor Mouse Right Clicked - Lat:{point.Lat} | Lon:{point.Lon}");
+        }
+    }
