@@ -2,26 +2,29 @@
 
     <div class="pb-4" style="height: calc(100vh - 3.5rem);">
         <Map 
-             MapClick="(e) => MapClicked((MapPoint)e)" 
-             MapDoubleClick="(e) => MapDoubleClicked((MapPoint)e)" 
-             MapRightClick="(e) => MapRightClicked((MapPoint)e)"
-             MapId="MapElement"></Map>
+             Map_Click="(e) => MapClicked((MapLatLng)e)" 
+             Map_DoubleClick="(e) => MapClicked((MapLatLng)e)" 
+             Map_RightClick="(e) => MapDoubleClicked((MapLatLng)e)"
+             MapId="MapElement"
+             ></Map>
     </div>
 
     @code {
 
-        private void MapClicked(MapPoint point)
+        private void MapClicked(MapLatLng point)
         {
-            Console.Out.WriteLine($"From Blazor Mouse Clicked - Lat:{point.Lat} | Lon:{point.Lon}");
+            Console.Out.WriteLine($"From Blazor Mouse Clicked - lat:{point.lat} | lng:{point.lng}");
         }
 
-        private void MapDoubleClicked(MapPoint point)
+        private void MapDoubleClicked(MapLatLng point)
         {
-            Console.Out.WriteLine($"From Blazor Mouse Double Clicked - Lat:{point.Lat} | Lon:{point.Lon}");
+            Console.Out.WriteLine($"From Blazor Mouse Double Clicked - lat:{point.lat} | lng:{point.lng}");
         }
+
+        private void MapRightClicked(MapLatLng point)
+        {
+            Console.Out.WriteLine($"From Blazor Mouse Right Clicked - lat:{point.lat} | lng:{point.lng}");
+        }
+
         
-        private void MapRightClicked(MapPoint point)
-        {
-            Console.Out.WriteLine($"From Blazor Mouse Right Clicked - Lat:{point.Lat} | Lon:{point.Lon}");
-        }
     }

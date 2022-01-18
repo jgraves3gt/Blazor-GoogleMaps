@@ -1,27 +1,126 @@
 ﻿let maps = [];
+let markers = [];
+let DotNetMapRefs = [];
 
-function initMap(mapId, lat, lon) {
+function initMap(mapId, DNMapRef, mapOptions) {
     try {
-        var map = new google.maps.Map(document.getElementById(mapId), {
-            center: { lat: lat, lng: lon },
-            zoom: 8,
-            mapId: 'dd7254a7eea796d1'
-        });
+        var map = new google.maps.Map(document.getElementById(mapId), mapOptions);
 
         maps[mapId] = map;
-        
+
+        DotNetMapRefs[mapId] = DNMapRef;
     }
     catch (e) {
         console.log("Map Initialization Error: " + e);
     }
 }
 
-function addMapMarker(mapId, marker) {
+
+
+function addMapMarker(mapId, markerId, markerOptions) {
+    var marker = new google.maps.Marker(markerOptions);
+    var map = maps[mapId];
+
+    if (map) {
+        marker.setMap(map);
+        markers[markerId] = marker;
+    }
 
 }
 
-function setMapClickListener(MapId, DNMapRef) {
+function setMarkerListeners(markerId, MapId) {
+    var marker = markers[markerId];
+    var DNMapRef = DotNetMapRefs[MapId];
+
+    marker.addListener("animation_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerAnimationChanged', markerId)
+    });
+
+    marker.addListener("click", () => {
+        DNMapRef.invokeMethodAsync('MarkerClick', markerId)
+    });
+
+    marker.addListener("clickable_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerClickableChanged', markerId)
+    });
+
+    marker.addListener("contextmenu", () => {
+        DNMapRef.invokeMethodAsync('MarkerContextMenu', markerId)
+    });
+
+    marker.addListener("cursor_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerCursorChanged', markerId)
+    });
+
+    marker.addListener("dblclick", () => {
+        DNMapRef.invokeMethodAsync('MarkerDoubleClick', markerId)
+    });
+
+    marker.addListener("drag", () => {
+        DNMapRef.invokeMethodAsync('MarkerDrag', markerId)
+    });
+
+    marker.addListener("dragend", () => {
+        DNMapRef.invokeMethodAsync('MarkerDragEnd', markerId)
+    });
+
+    marker.addListener("draggable_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerDraggableChanged', markerId)
+    });
+
+    marker.addListener("dragstart", () => {
+        DNMapRef.invokeMethodAsync('MarkerDragStart', markerId)
+    });
+
+    marker.addListener("flat_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerFlatChanged', markerId)
+    });
+
+    marker.addListener("icon_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerIconChanged', markerId)
+    });
+
+    marker.addListener("mousedown", () => {
+        DNMapRef.invokeMethodAsync('MarkerMouseDown', markerId)
+    });
+
+    marker.addListener("mouseout", () => {
+        DNMapRef.invokeMethodAsync('MarkerMouseOut', markerId)
+    });
+
+    marker.addListener("mouseover", () => {
+        DNMapRef.invokeMethodAsync('MarkerMouseOver', markerId)
+    });
+
+    marker.addListener("mouseup", () => {
+        DNMapRef.invokeMethodAsync('MarkerMouseUp', markerId)
+    });
+
+    marker.addListener("position_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerPositionChanged', markerId)
+    });
+
+    marker.addListener("shape_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerShapeChanged', markerId)
+    });
+
+    marker.addListener("title_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerTitleChanged', markerId)
+    });
+
+    marker.addListener("visible_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerVisibleChanged', markerId)
+    });
+
+    marker.addListener("zindex_changed", () => {
+        DNMapRef.invokeMethodAsync('MarkerZIndexChanged', markerId)
+    });
+}
+
+
+function setMapEventListeners(MapId) {
     var map = maps[MapId];
+    var DNMapRef = DotNetMapRefs[MapId];
 
     map.addListener("click", (mapsMouseEvent) => {
         DNMapRef.invokeMethodAsync('MapClicked', mapsMouseEvent.latLng.lat(), mapsMouseEvent.latLng.lng());
