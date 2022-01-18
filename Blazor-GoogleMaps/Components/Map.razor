@@ -26,11 +26,43 @@
         public string MapId { get; set; }
 
         [Parameter]
-        public EventCallback<MapPoint> MapClick { get; set; }
+        public EventCallback<MapPoint> Map_Click { get; set; }
         [Parameter]
-        public EventCallback<MapPoint> MapDoubleClick { get; set; }
-        [Parameter]
-        public EventCallback<MapPoint> MapRightClick { get; set; }
+        public EventCallback<MapPoint> Map_DoubleClick { get; set; }
+        [Parameter]                       
+        public EventCallback<MapPoint> Map_RightClick { get; set; }
+        [Parameter]                       
+        public EventCallback Map_BoundsChanged { get; set; }
+        [Parameter]                       
+        public EventCallback Map_CenterChanged { get; set; }
+        [Parameter]             
+        public EventCallback Map_Drag { get; set; }
+        [Parameter]             
+        public EventCallback Map_DragEnd { get; set; }
+        [Parameter]             
+        public EventCallback Map_DragStart { get; set; }
+        [Parameter]             
+        public EventCallback Map_HeadingChanged { get; set; }
+        [Parameter]             
+        public EventCallback Map_Idle { get; set; }
+        [Parameter]             
+        public EventCallback Map_MapTypeIdChanged { get; set; }
+        [Parameter]                       
+        public EventCallback<MapPoint> Map_MouseMove { get; set; }
+        [Parameter]                       
+        public EventCallback<MapPoint> Map_MouseOut { get; set; }
+        [Parameter]                       
+        public EventCallback<MapPoint> Map_MouseOver { get; set; }
+        [Parameter]                       
+        public EventCallback Map_ProjectionChanged { get; set; }
+        [Parameter]             
+        public EventCallback Map_Resize { get; set; }
+        [Parameter]             
+        public EventCallback Map_ZoomChanged { get; set; }
+        [Parameter]             
+        public EventCallback Map_TilesLoaded { get; set; }
+        [Parameter]             
+        public EventCallback Map_TiltChanged { get; set; }
 
         private DotNetObjectReference<Map>? objRef;
 
@@ -45,19 +77,115 @@
         [JSInvokable]
         public async Task MapClicked(double lat, double lon)
         {
-            await MapClick.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
+            await Map_Click.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
         }
 
         [JSInvokable]
         public async Task MapDoubleClicked(double lat, double lon)
         {
-            await MapDoubleClick.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
+            await Map_DoubleClick.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
         }
         
         [JSInvokable]
         public async Task MapRightClicked(double lat, double lon)
         {
-            await MapRightClick.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
+            await Map_RightClick.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
+        }
+
+        [JSInvokable]
+        public async Task MapBoundsChanged()
+        {
+            await Map_BoundsChanged.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapCenterChanged()
+        {
+            await Map_CenterChanged.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapDrag()
+        {
+            await Map_Drag.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapDragEnd()
+        {
+            await Map_DragEnd.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapDragStart()
+        {
+            await Map_DragStart.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapIdle()
+        {
+            await Map_Idle.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapMapTypeIdChanged()
+        {
+            await Map_MapTypeIdChanged.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapMouseMove(double lat, double lon)
+        {
+            await Map_MouseMove.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
+        }
+
+        [JSInvokable]
+        public async Task MapMouseOut(double lat, double lon)
+        {
+            await Map_MouseOut.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
+        }
+
+        [JSInvokable]
+        public async Task MapMouseOver(double lat, double lon)
+        {
+            await Map_MouseOver.InvokeAsync(new MapPoint() { Lat = lat, Lon = lon });
+        }
+
+        [JSInvokable]
+        public async Task MapProjectionChanged()
+        {
+            await Map_ProjectionChanged.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapResize()
+        {
+            await Map_Resize.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapZoomChanged()
+        {
+            await Map_ZoomChanged.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapTilesLoaded()
+        {
+            await Map_TilesLoaded.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapTiltChanged()
+        {
+            await Map_TiltChanged.InvokeAsync();
+        }
+
+        [JSInvokable]
+        public async Task MapHeadingChanged()
+        {
+            await Map_HeadingChanged.InvokeAsync();
         }
 
         private async void SetOnclickListeners()
