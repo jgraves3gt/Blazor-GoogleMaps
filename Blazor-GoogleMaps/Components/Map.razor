@@ -12,21 +12,21 @@
 
     @code {
 
-            //Properties
-            [Parameter]
-            public string APIKey { get; set; }
+        //Properties
+        [Parameter]
+        public string APIKey { get; set; }
 
-            [Parameter]
-            public double StartLat { get; set; } = 41.739081;
+        [Parameter]
+        public double StartLat { get; set; } = 41.739081;
 
-            [Parameter]
-            public double StartLon { get; set; } = -111.834756;
+        [Parameter]
+        public double StartLon { get; set; } = -111.834756;
 
-            [Parameter]
-            public string MapId { get; set; }
+        [Parameter]
+        public string MapId { get; set; }
 
-            [Parameter]
-            public object MapOptions { get; set; } = new { center = new MapLatLng { lat = 41.739081, lng = -111.834756 }, zoom = 15 };
+        [Parameter]
+        public object MapOptions { get; set; } = new { center = new MapLatLng { lat = 41.739081, lng = -111.834756 }, zoom = 15 };
 
         //Map Events
         [Parameter]
@@ -73,45 +73,46 @@
         [Parameter]
         public EventCallback Marker_Click { get; set; }
         [Parameter]
-        public EventCallback Marker_Clickable_Changed { get; set; }
+        public EventCallback Marker_ClickableChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_Context_Menu { get; set; }
+        public EventCallback Marker_ContextMenu { get; set; }
         [Parameter]
-        public EventCallback Marker_Cursor_Changed { get; set; }
+        public EventCallback Marker_CursorChanged { get; set; }
         [Parameter]
         public EventCallback Marker_DBLClick { get; set; }
         [Parameter]
         public EventCallback Marker_Drag { get; set; }
         [Parameter]
-        public EventCallback Marker_Drag_End { get; set; }
+        public EventCallback Marker_DragEnd { get; set; }
         [Parameter]
-        public EventCallback Marker_Draggable_Changed { get; set; }
+        public EventCallback Marker_DraggableChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_Drag_Start { get; set; }
+        public EventCallback Marker_DragStart { get; set; }
         [Parameter]
-        public EventCallback Marker_Flat_Changed { get; set; }
+        public EventCallback Marker_FlatChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_Icon_Changed { get; set; }
+        public EventCallback Marker_IconChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_Mouse_Down { get; set; }
+        public EventCallback Marker_MouseDown { get; set; }
         [Parameter]
-        public EventCallback Marker_Mouse_Out { get; set; }
+        public EventCallback Marker_MouseOut { get; set; }
         [Parameter]
-        public EventCallback Marker_Mouse_Over { get; set; }
+        public EventCallback Marker_MouseOver { get; set; }
         [Parameter]
-        public EventCallback Marker_Mouse_Up { get; set; }
+        public EventCallback Marker_MouseUp { get; set; }
         [Parameter]
-        public EventCallback Marker_Position_Changed { get; set; }
+        public EventCallback Marker_PositionChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_Shape_Changed { get; set; }
+        public EventCallback Marker_ShapeChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_Title_Changed { get; set; }
+        public EventCallback Marker_TitleChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_Visible_Changed { get; set; }
+        public EventCallback Marker_VisibleChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_Z_Index_Changed { get; set; }
+        public EventCallback Marker_ZIndexChanged { get; set; }
 
-        private List<MapMarker> Markers { get; set; }
+        private List<MapMarker> Markers { get; set; } = new();
+        private List<MapPolygon> Polygons { get; set; } = new();
 
         private DotNetObjectReference<Map>? objRef;
 
@@ -129,11 +130,31 @@
             return Markers.FirstOrDefault(m => m.Id == Id);
         }
 
-        public async void AddMarker(MapMarker marker)
+        public async void AddMarker(MapMarker marker, MapMarkerOptions options)
         {
             Markers.Add(marker);
-            var options = marker.GetOptions();
             await JS.InvokeVoidAsync("addMapMarker", MapId, marker.Id, options);
+        }
+
+        public async void UpdateMarker(Guid Id, MapMarkerOptions options)
+        {
+            await JS.InvokeVoidAsync("updateMapMarker", Id, options);
+        }
+
+        public MapPolygon GetPolygon(Guid Id)
+        {
+            return Polygons.FirstOrDefault(p => p.Id == Id);
+        }
+
+        public async void AddPolygon(MapPolygon polygon, MapPolygonOptions options)
+        {
+            Polygons.Add(polygon);
+            await JS.InvokeVoidAsync("addMapPolygon", MapId, polygon.Id, options);
+        }
+
+        public async void UpdatePolygon(Guid Id, MapPolygonOptions options)
+        {
+            await JS.InvokeVoidAsync("updateMapPolygon", Id, options);
         }
 
         //Map Events
@@ -255,124 +276,145 @@
         [JSInvokable]
         public async Task MarkerAnimationChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_AnimationChanged.InvokeAsync(marker);
         }
         [JSInvokable]
         public async Task MarkerClick(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_Click.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerClickableChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_ClickableChanged.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerContextMenu(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_ContextMenu.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerCursorChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_CursorChanged.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerDoubleClick(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_DBLClick.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerDrag(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_Drag.InvokeAsync(marker);
         }
         [JSInvokable]
         public async Task MarkerDragEnd(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_DragEnd.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerDraggableChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_DraggableChanged.InvokeAsync(marker);
         }
         [JSInvokable]
         public async Task MarkerDragStart(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_DragStart.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerFlatChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_FlatChanged.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerIconChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_IconChanged.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerMouseDown(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_MouseDown.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerMouseOut(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_MouseOut.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerMouseOver(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_MouseOver.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerMouseUp(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_MouseUp.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerPositionChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_PositionChanged.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerShapeChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_ShapeChanged.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerTitleChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_TitleChanged.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerVisibleChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_VisibleChanged.InvokeAsync(marker);
         }
 
         [JSInvokable]
         public async Task MarkerZIndexChanged(Guid MarkerId)
         {
-
+            var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+            await Marker_ZIndexChanged.InvokeAsync(marker);
         }
 
         private async void SetMapEventListeners()

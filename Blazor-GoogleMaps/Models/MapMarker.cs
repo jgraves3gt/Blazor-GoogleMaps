@@ -12,13 +12,8 @@ namespace Blazor_GoogleMaps.Models
         public double Lon { get; set; }
         public bool Clickable { get; set; } = true;
         public bool Visible { get; set; } = true;
+        public double Opacity { get; set; } = 1;
         private IconSourceType SourceType { get; set; }
-        public MapMarkerOptions GetOptions()
-        {
-            return new MapMarkerOptions();
-        }
-    }
 
-
-    
+    }  
 }

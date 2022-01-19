@@ -1,5 +1,6 @@
 ﻿let maps = [];
 let markers = [];
+let polygons = [];
 let DotNetMapRefs = [];
 
 function initMap(mapId, DNMapRef, mapOptions) {
@@ -25,7 +26,30 @@ function addMapMarker(mapId, markerId, markerOptions) {
         marker.setMap(map);
         markers[markerId] = marker;
     }
+}
 
+function updateMapMarker(markerId, markerOptions) {
+    var marker = markers[markerId];
+    if (marker) {
+        marker.setOptions(markerOptions);
+    }
+}
+
+function addMapPolygon(mapId, polygonId, polygonOptions) {
+    var polygon = new google.maps.Polygon(polygonOptions);
+    var map = maps[mapId];
+
+    if (map) {
+        polygon.setMap(map);
+        polygons[polygonId] = polygon;
+    }
+}
+
+function updateMapPolygon(polygonId, polygonOptions) {
+    var marker = markers[polygonId];
+    if (marker) {
+        marker.setOptions(polygonOptions);
+    }
 }
 
 function setMarkerListeners(markerId, MapId) {
