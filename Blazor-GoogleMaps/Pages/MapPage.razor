@@ -3,11 +3,7 @@
     <div class="row">
         <div class="col-md-2">
             <div class="form-group">
-                <button class="btn btn-block btn-outline-info">Draw Circle</button>
-                <button class="btn btn-block btn-outline-success">Draw Polygon</button>
-                <button class="btn btn-block btn-outline-warning">Draw Lines</button>
-                <button class="btn btn-block btn-outline-primary">Draw Rectangle</button>
-                <button class="btn btn-block btn-outline-dark">Draw Marker</button>
+                <button class="btn btn-block btn-outline-info" @onclick="StartDrawing">Start Drawing</button>
             </div>
         </div>
         <div class="col-md-10">
@@ -16,6 +12,7 @@
                      Map_Click="(e) => MapClicked((MapLatLng)e)"
                      Map_DoubleClick="(e) => MapDoubleClicked((MapLatLng)e)"
                      Map_RightClick="(e) => MapRightClicked((MapLatLng)e)"
+                     Marker_Click="(e) => MarkerClicked((MapElementMouseEvent)e)"
                      MapId="MapElement"></Map>
             </div>
         </div>
@@ -32,43 +29,20 @@
                     clickable = true,
                     position = point,
                     opacity = 1,
-                    visible = true
+                    visible = true,
+                    
                 }
             });
         }
 
-        private async void StartDrawing(int type)
+        private void StartDrawing()
         {
-            //0 = Circle
-            if (type == 0)
-            {
-                // Draw Circle
+            MapItem.StartDrawing();
+        }
 
-            }
-            //1 = Polygon
-            else if (type == 1)
-            {
-                //Draw Polygon
-
-            }
-            //2 = Polylines
-            else if (type == 2)
-            {
-                //Draw Polylines
-
-            }
-            //3 = Rectangle
-            else if (type == 3)
-            {
-                //Draw Rectangle
-
-            }
-            //4 = Marker
-            else if (type == 4)
-            {
-                //Draw Marker
-
-            }
+        private void MarkerClicked(MapElementMouseEvent e)
+        {
+            Console.Out.WriteLine($"Marker:{e.ElementId}, Clicked at coordinates Lat:{e.Coords.lat}, Lon:{e.Coords.lng}");
         }
 
         private void MapDoubleClicked(MapLatLng point)
