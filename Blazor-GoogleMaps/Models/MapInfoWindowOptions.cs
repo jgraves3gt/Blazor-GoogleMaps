@@ -7,7 +7,13 @@ namespace Blazor_GoogleMaps.Models
 {
     public class MapInfoWindowOptions
     {
-
+        public string content { get; set; }
+        public bool disableAutoPan { get; set; } = false;
+        public int maxWidth { get; set; }
+        public int minWidth { get; set; }
+        public int zIndex { get; set; }
+        public MapSize pixelOffset { get; set; }
+        public MapLatLng position { get; set; }
     }
 
     public class MapInfoWindowOpenOptions

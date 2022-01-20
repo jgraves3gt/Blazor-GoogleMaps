@@ -3,7 +3,17 @@
     <div class="row">
         <div class="col-md-2">
             <div class="form-group">
-                <button class="btn btn-block btn-outline-info" @onclick="StartDrawing">Start Drawing</button>
+                @if (MapItem is not null)
+                {
+                    if (!MapItem.IsDrawing)
+                    {
+                        <button class="btn btn-block btn-outline-info" @onclick="StartDrawing">Start Drawing</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-block btn-outline-info" @onclick="EndDrawing">End Drawing</button>
+                    }
+                }
             </div>
         </div>
         <div class="col-md-10">
@@ -39,6 +49,11 @@
         {
             MapItem.StartDrawing();
         }
+        
+        private void EndDrawing()
+        {
+            MapItem.EndDrawing();
+        }
 
         private void MarkerClicked(MapElementMouseEvent e)
         {
@@ -55,5 +70,16 @@
             Console.Out.WriteLine($"From Blazor Mouse Right Clicked - lat:{point.lat} | lng:{point.lng}");
         }
 
+        protected async override Task OnInitializedAsync()
+        {
+            base.OnInitializedAsync();
 
-    }
+            while (MapItem is null)
+            {
+                await Task.Delay(1);
+            }
+
+            StateHasChanged();
+        }
+
+}

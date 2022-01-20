@@ -1,6 +1,7 @@
 ﻿let maps = [];
 let drawingManagers = [];
 let markers = [];
+let infoMarkers = [];
 let polygons = [];
 let polyLines = [];
 let rectangles = [];
@@ -18,6 +19,8 @@ function initMap(mapId, DNMapRef, mapOptions) {
         drawingManagers[mapId] = drawManager;
 
         DotNetMapRefs[mapId] = DNMapRef;
+
+        setDrawingManagerListeners(mapId, mapId);
     }
     catch (e) {
         console.log("Map Initialization Error: " + e);
@@ -28,12 +31,61 @@ function startDrawing(mapId, drawingOptions) {
     var drawManager = drawingManagers[mapId];
 
     if (drawManager) {
-        drawManager.setOptions(drawingOptions);
+        if (drawingOptions) {
+            drawManager.setOptions(drawingOptions);
+        }
+        else {
+            drawManager.setOptions({drawingControl: true});
+        }
     }
     else {
         drawManager = new google.maps.drawing.DrawingManager(drawingOptions);
-
         drawingManagers[mapId] = drawManager;
+    }
+}
+
+function endDrawing(mapId) {
+    var drawManager = drawingManagers[mapId];
+
+    if (drawManager) {
+        drawManager.setOptions({ drawingMode: null, drawingControl: false });
+    }
+}
+
+function setDrawingManagerListeners(MapId, drawingManagerId) {
+    var dm = drawingManagers[drawingManagerId];
+    var DNMapRef = DotNetMapRefs[MapId];
+    
+    if (dm) {
+        dm.addListener("circlecomplete", async (circle) => {
+            var guid = await DNMapRef.invokeMethodAsync("AddCircleFromDrawingManager");
+            circles[guid] = circle;
+            setCircleListeners(guid, MapId);
+        });
+
+        dm.addListener("markercomplete", async (circle) => {
+            var guid = await DNMapRef.invokeMethodAsync("AddMarkerFromDrawingManager");
+            markers[guid] = circle;
+            setMarkerListeners(guid, MapId);
+        });
+
+        dm.addListener("polygoncomplete", async (circle) => {
+            var guid = await DNMapRef.invokeMethodAsync("AddPolygonFromDrawingManager");
+            polygons[guid] = circle;
+            setPolygonListeners(guid, MapId);
+        });
+
+        dm.addListener("polylinecomplete", async (circle) => {
+            var guid = await DNMapRef.invokeMethodAsync("AddPolylineFromDrawingManager");
+            polyLines[guid] = circle;
+            setPolyLineListeners(guid, MapId);
+        });
+
+        dm.addListener("rectanglecomplete", async (circle) => {
+            var guid = await DNMapRef.invokeMethodAsync("AddRectangleFromDrawingManager");
+            rectangles[guid] = circle;
+            setRectangleListeners(guid, MapId);
+        });
     }
 }
 
@@ -55,6 +107,27 @@ function updateMapMarker(markerId, markerOptions) {
     var marker = markers[markerId];
     if (marker) {
         marker.setOptions(markerOptions);
+    }
+}
+
+//Add Info Window
+function addInfoWindow(mapId, mapInfoWindow) {
+    var infoWindow = new google.maps.InfoWindow(mapInfoWindow.options);
+    var map = maps[mapId];
+
+    if (map) {
+        infoWindow.setMap(map);
+        infoWindows[mapInfoWindow.id] = infoWindow;
+
+        setInfoWindowListeners(mapInfoWindow.id, mapId);
+    }
+}
+
+//Update Info Window
+function updateInfoWindow(infoWindowId, infoWindowOptions) {
+    var infoWindow = infoWindows[infoWindowId];
+    if (infoWindow) {
+        infoWindow.setOptions(infoWindowOptions);
     }
 }
 
@@ -142,7 +215,16 @@ function updateMapPolyLine(circleId, circleOptions) {
     }
 }
 
+function setInfoWindowListeners(infoWindowId, MapId) {
+    var infoWindow = infoWindows[infoWindowId];
+    var DNMapRef = DotNetMapRefs[MapId];
 
+    infoWindow.addListener("closeclick", () => { DNMapRef.invokeMethodAsync('InfoWindowCloseClicked', infoWindowId); });
+    infoWindow.addListener("content_changed", () => { DNMapRef.invokeMethodAsync('InfoWindowContentChanged', infoWindowId); });
+    infoWindow.addListener("domready", () => { DNMapRef.invokeMethodAsync('InfoWindowDomReady', infoWindowId); });
+    infoWindow.addListener("position_changed", () => { DNMapRef.invokeMethodAsync('InfoWindowPositionChanged', infoWindowId); });
+    infoWindow.addListener("zindex_changed", () => { DNMapRef.invokeMethodAsync('InfoWindowZIndexChanged', infoWindowId); });
+}
 
 function setCircleListeners(circleId, MapId) {
     var circle = circles[circleId];
