@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace Blazor_GoogleMaps.Models
 {
-    public class MapPolygon
+    public class MapPolyLineOptions
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public object Options { get; set; }
     }
 }

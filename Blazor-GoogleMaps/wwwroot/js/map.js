@@ -18,13 +18,13 @@ function initMap(mapId, DNMapRef, mapOptions) {
 
 
 
-function addMapMarker(mapId, markerId, markerOptions) {
-    var marker = new google.maps.Marker(markerOptions);
+function addMapMarker(mapId, mapMarker) {
+    var marker = new google.maps.Marker(mapMarker.options);
     var map = maps[mapId];
 
     if (map) {
         marker.setMap(map);
-        markers[markerId] = marker;
+        markers[mapMarker.id] = marker;
     }
 }
 
@@ -35,13 +35,13 @@ function updateMapMarker(markerId, markerOptions) {
     }
 }
 
-function addMapPolygon(mapId, polygonId, polygonOptions) {
-    var polygon = new google.maps.Polygon(polygonOptions);
+function addMapPolygon(mapId, mapPolygon) {
+    var polygon = new google.maps.Polygon(mapPolygon.options);
     var map = maps[mapId];
 
     if (map) {
         polygon.setMap(map);
-        polygons[polygonId] = polygon;
+        polygons[mapPolygon.id] = polygon;
     }
 }
 
@@ -52,92 +52,196 @@ function updateMapPolygon(polygonId, polygonOptions) {
     }
 }
 
+function setPolygonListeners(polygonId, MapId) {
+    var polygon = markers[polygonId];
+    var DNMapRef = DotNetMapRefs[MapId];
+
+    polygon.addListener("click", (me) => {
+        
+        DNMapRef.invokeMethodAsync('PolygonClick', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+
+    polygon.addListener("contextmenu", () => {
+        DNMapRef.invokeMethodAsync('PolygonContextMenu', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+    polygon.addListener("dblclick", () => {
+        DNMapRef.invokeMethodAsync('PolygonDoubleClick', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+
+    polygon.addListener("drag", () => {
+        DNMapRef.invokeMethodAsync('PolygonDrag', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+
+    polygon.addListener("dragend", () => {
+        DNMapRef.invokeMethodAsync('PolygonDragEnd', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+
+    polygon.addListener("dragstart", () => {
+        DNMapRef.invokeMethodAsync('PolygonDragStart', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+
+    polygon.addListener("mousemove", () => {
+        DNMapRef.invokeMethodAsync('PolygonMouseMove', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+
+    polygon.addListener("mousedown", () => {
+        DNMapRef.invokeMethodAsync('PolygonMouseDown', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+
+    polygon.addListener("mouseout", () => {
+        DNMapRef.invokeMethodAsync('PolygonMouseOut', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+
+    polygon.addListener("mouseover", () => {
+        DNMapRef.invokeMethodAsync('PolygonMouseOver', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+
+    polygon.addListener("mouseup", () => {
+        DNMapRef.invokeMethodAsync('PolygonMouseUp', {
+            edge: me.edge ? me.edge : null,
+            PolygonId: polygonId,
+            path: me.path ? me.path : null,
+            vertex: me.vertex ? me.vertex : null
+        });
+    });
+}
+
 function setMarkerListeners(markerId, MapId) {
     var marker = markers[markerId];
     var DNMapRef = DotNetMapRefs[MapId];
 
     marker.addListener("animation_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerAnimationChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerAnimationChanged', markerId);
     });
 
     marker.addListener("click", () => {
-        DNMapRef.invokeMethodAsync('MarkerClick', markerId)
+        DNMapRef.invokeMethodAsync('MarkerClick', markerId);
     });
 
     marker.addListener("clickable_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerClickableChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerClickableChanged', markerId);
     });
 
     marker.addListener("contextmenu", () => {
-        DNMapRef.invokeMethodAsync('MarkerContextMenu', markerId)
+        DNMapRef.invokeMethodAsync('MarkerContextMenu', markerId);
     });
 
     marker.addListener("cursor_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerCursorChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerCursorChanged', markerId);
     });
 
     marker.addListener("dblclick", () => {
-        DNMapRef.invokeMethodAsync('MarkerDoubleClick', markerId)
+        DNMapRef.invokeMethodAsync('MarkerDoubleClick', markerId);
     });
 
     marker.addListener("drag", () => {
-        DNMapRef.invokeMethodAsync('MarkerDrag', markerId)
+        DNMapRef.invokeMethodAsync('MarkerDrag', markerId);
     });
 
     marker.addListener("dragend", () => {
-        DNMapRef.invokeMethodAsync('MarkerDragEnd', markerId)
+        DNMapRef.invokeMethodAsync('MarkerDragEnd', markerId);
     });
 
     marker.addListener("draggable_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerDraggableChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerDraggableChanged', markerId);
     });
 
     marker.addListener("dragstart", () => {
-        DNMapRef.invokeMethodAsync('MarkerDragStart', markerId)
+        DNMapRef.invokeMethodAsync('MarkerDragStart', markerId);
     });
 
     marker.addListener("flat_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerFlatChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerFlatChanged', markerId);
     });
 
     marker.addListener("icon_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerIconChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerIconChanged', markerId);
     });
 
     marker.addListener("mousedown", () => {
-        DNMapRef.invokeMethodAsync('MarkerMouseDown', markerId)
+        DNMapRef.invokeMethodAsync('MarkerMouseDown', markerId);
     });
 
     marker.addListener("mouseout", () => {
-        DNMapRef.invokeMethodAsync('MarkerMouseOut', markerId)
+        DNMapRef.invokeMethodAsync('MarkerMouseOut', markerId);
     });
 
     marker.addListener("mouseover", () => {
-        DNMapRef.invokeMethodAsync('MarkerMouseOver', markerId)
+        DNMapRef.invokeMethodAsync('MarkerMouseOver', markerId);
     });
 
     marker.addListener("mouseup", () => {
-        DNMapRef.invokeMethodAsync('MarkerMouseUp', markerId)
+        DNMapRef.invokeMethodAsync('MarkerMouseUp', markerId);
     });
 
     marker.addListener("position_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerPositionChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerPositionChanged', markerId);
     });
 
     marker.addListener("shape_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerShapeChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerShapeChanged', markerId);
     });
 
     marker.addListener("title_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerTitleChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerTitleChanged', markerId);
     });
 
     marker.addListener("visible_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerVisibleChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerVisibleChanged', markerId);
     });
 
     marker.addListener("zindex_changed", () => {
-        DNMapRef.invokeMethodAsync('MarkerZIndexChanged', markerId)
+        DNMapRef.invokeMethodAsync('MarkerZIndexChanged', markerId);
     });
 }
 
@@ -155,6 +259,7 @@ function setMapEventListeners(MapId) {
     });
 
     map.addListener("rightclick", (mapsMouseEvent) => {
+        console.log("Right Clicked From JS");
         DNMapRef.invokeMethodAsync('MapRightClicked', mapsMouseEvent.latLng.lat(), mapsMouseEvent.latLng.lng());
     });
 

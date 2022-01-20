@@ -1,19 +1,74 @@
 ﻿@page "/map"
 
-    <div class="pb-4" style="height: calc(100vh - 3.5rem);">
-        <Map 
-             Map_Click="(e) => MapClicked((MapLatLng)e)" 
-             Map_DoubleClick="(e) => MapClicked((MapLatLng)e)" 
-             Map_RightClick="(e) => MapDoubleClicked((MapLatLng)e)"
-             MapId="MapElement"
-             ></Map>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <button class="btn btn-block btn-outline-info">Draw Circle</button>
+                <button class="btn btn-block btn-outline-success">Draw Polygon</button>
+                <button class="btn btn-block btn-outline-warning">Draw Lines</button>
+                <button class="btn btn-block btn-outline-primary">Draw Rectangle</button>
+                <button class="btn btn-block btn-outline-dark">Draw Marker</button>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="pb-4" style="height: calc(100vh - 3.5rem);">
+                <Map @ref="MapItem"
+                     Map_Click="(e) => MapClicked((MapLatLng)e)"
+                     Map_DoubleClick="(e) => MapDoubleClicked((MapLatLng)e)"
+                     Map_RightClick="(e) => MapRightClicked((MapLatLng)e)"
+                     MapId="MapElement"></Map>
+            </div>
+        </div>
     </div>
-
     @code {
-
+        private Map MapItem { get; set; }
         private void MapClicked(MapLatLng point)
         {
-            Console.Out.WriteLine($"From Blazor Mouse Clicked - lat:{point.lat} | lng:{point.lng}");
+            MapItem.AddMarker(new MapMarker()
+            {
+                Id = Guid.NewGuid(),
+                Options = new MapMarkerOptions
+                {
+                    clickable = true,
+                    position = point,
+                    opacity = 1,
+                    visible = true
+                }
+            });
+        }
+
+        private async void StartDrawing(int type)
+        {
+            //0 = Circle
+            if (type == 0)
+            {
+                // Draw Circle
+
+            }
+            //1 = Polygon
+            else if (type == 1)
+            {
+                //Draw Polygon
+
+            }
+            //2 = Polylines
+            else if (type == 2)
+            {
+                //Draw Polylines
+
+            }
+            //3 = Rectangle
+            else if (type == 3)
+            {
+                //Draw Rectangle
+
+            }
+            //4 = Marker
+            else if (type == 4)
+            {
+                //Draw Marker
+
+            }
         }
 
         private void MapDoubleClicked(MapLatLng point)
@@ -26,5 +81,5 @@
             Console.Out.WriteLine($"From Blazor Mouse Right Clicked - lat:{point.lat} | lng:{point.lng}");
         }
 
-        
+
     }

@@ -28,7 +28,9 @@
         [Parameter]
         public object MapOptions { get; set; } = new { center = new MapLatLng { lat = 41.739081, lng = -111.834756 }, zoom = 15 };
 
+        //
         //Map Events
+        //
         [Parameter]
         public EventCallback<MapLatLng> Map_Click { get; set; }
         [Parameter]
@@ -67,49 +69,78 @@
         public EventCallback Map_TilesLoaded { get; set; }
         [Parameter]
         public EventCallback Map_TiltChanged { get; set; }
+        //
         //Marker Events
+        //
         [Parameter]
-        public EventCallback Marker_AnimationChanged { get; set; }
+        public EventCallback<MapMarker> Marker_AnimationChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_Click { get; set; }
+        public EventCallback<MapMarker> Marker_Click { get; set; }
         [Parameter]
-        public EventCallback Marker_ClickableChanged { get; set; }
+        public EventCallback<MapMarker> Marker_ClickableChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_ContextMenu { get; set; }
+        public EventCallback<MapMarker> Marker_ContextMenu { get; set; }
         [Parameter]
-        public EventCallback Marker_CursorChanged { get; set; }
+        public EventCallback<MapMarker> Marker_CursorChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_DBLClick { get; set; }
+        public EventCallback<MapMarker> Marker_DBLClick { get; set; }
         [Parameter]
-        public EventCallback Marker_Drag { get; set; }
+        public EventCallback<MapMarker> Marker_Drag { get; set; }
         [Parameter]
-        public EventCallback Marker_DragEnd { get; set; }
+        public EventCallback<MapMarker> Marker_DragEnd { get; set; }
         [Parameter]
-        public EventCallback Marker_DraggableChanged { get; set; }
+        public EventCallback<MapMarker> Marker_DraggableChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_DragStart { get; set; }
+        public EventCallback<MapMarker> Marker_DragStart { get; set; }
         [Parameter]
-        public EventCallback Marker_FlatChanged { get; set; }
+        public EventCallback<MapMarker> Marker_FlatChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_IconChanged { get; set; }
+        public EventCallback<MapMarker> Marker_IconChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_MouseDown { get; set; }
+        public EventCallback<MapMarker> Marker_MouseDown { get; set; }
         [Parameter]
-        public EventCallback Marker_MouseOut { get; set; }
+        public EventCallback<MapMarker> Marker_MouseOut { get; set; }
         [Parameter]
-        public EventCallback Marker_MouseOver { get; set; }
+        public EventCallback<MapMarker> Marker_MouseOver { get; set; }
         [Parameter]
-        public EventCallback Marker_MouseUp { get; set; }
+        public EventCallback<MapMarker> Marker_MouseUp { get; set; }
         [Parameter]
-        public EventCallback Marker_PositionChanged { get; set; }
+        public EventCallback<MapMarker> Marker_PositionChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_ShapeChanged { get; set; }
+        public EventCallback<MapMarker> Marker_ShapeChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_TitleChanged { get; set; }
+        public EventCallback<MapMarker> Marker_TitleChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_VisibleChanged { get; set; }
+        public EventCallback<MapMarker> Marker_VisibleChanged { get; set; }
         [Parameter]
-        public EventCallback Marker_ZIndexChanged { get; set; }
+        public EventCallback<MapMarker> Marker_ZIndexChanged { get; set; }
+        //
+        //Polygon Events
+        //
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_Click { get; set; }       
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_ContextMenu { get; set; }        
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_DBLClick { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_Drag { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_DragEnd { get; set; }        
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_DragStart { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_MouseDown { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_MouseMove { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_MouseOut { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_MouseOver { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_MouseUp { get; set; }
+
+
 
         private List<MapMarker> Markers { get; set; } = new();
         private List<MapPolygon> Polygons { get; set; } = new();
@@ -130,10 +161,10 @@
             return Markers.FirstOrDefault(m => m.Id == Id);
         }
 
-        public async void AddMarker(MapMarker marker, MapMarkerOptions options)
+        public async void AddMarker(MapMarker marker)
         {
             Markers.Add(marker);
-            await JS.InvokeVoidAsync("addMapMarker", MapId, marker.Id, options);
+            await JS.InvokeVoidAsync("addMapMarker", MapId, marker);
         }
 
         public async void UpdateMarker(Guid Id, MapMarkerOptions options)
@@ -146,10 +177,10 @@
             return Polygons.FirstOrDefault(p => p.Id == Id);
         }
 
-        public async void AddPolygon(MapPolygon polygon, MapPolygonOptions options)
+        public async void AddPolygon(MapPolygon polygon)
         {
             Polygons.Add(polygon);
-            await JS.InvokeVoidAsync("addMapPolygon", MapId, polygon.Id, options);
+            await JS.InvokeVoidAsync("addMapPolygon", MapId, polygon);
         }
 
         public async void UpdatePolygon(Guid Id, MapPolygonOptions options)
@@ -415,6 +446,74 @@
         {
             var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
             await Marker_ZIndexChanged.InvokeAsync(marker);
+        }
+
+        //
+        //Polygon Events
+        //
+        [JSInvokable]
+        public async Task PolygonClick(MapPolyMouseEvent args)
+        {
+            await Polygon_Click.InvokeAsync(args);
+        }
+
+        [JSInvokable]
+        public async Task PolygonContextMenu(MapPolyMouseEvent args)
+        {
+            await Polygon_ContextMenu.InvokeAsync(args);
+        }
+
+        [JSInvokable]
+        public async Task PolygonDoubleClick(MapPolyMouseEvent args)
+        {
+            await Polygon_DBLClick.InvokeAsync(args);
+        }
+
+        [JSInvokable]
+        public async Task PolygonDrag(MapPolyMouseEvent args)
+        {
+            await Polygon_Drag.InvokeAsync(args);
+        }
+        [JSInvokable]
+        public async Task PolygonDragEnd(MapPolyMouseEvent args)
+        {
+            await Polygon_DragEnd.InvokeAsync(args);
+        }
+
+        [JSInvokable]
+        public async Task PolygonDragStart(MapPolyMouseEvent args)
+        {
+            await Polygon_DragStart.InvokeAsync(args);
+        }
+
+        [JSInvokable]
+        public async Task PolygonMouseMove(MapPolyMouseEvent args)
+        {
+            await Polygon_MouseDown.InvokeAsync(args);
+        }
+        
+        [JSInvokable]
+        public async Task PolygonMouseDown(MapPolyMouseEvent args)
+        {
+            await Polygon_MouseDown.InvokeAsync(args);
+        }
+
+        [JSInvokable]
+        public async Task PolygonMouseOut(MapPolyMouseEvent args)
+        {
+            await Polygon_MouseOut.InvokeAsync(args);
+        }
+
+        [JSInvokable]
+        public async Task PolygonMouseOver(MapPolyMouseEvent args)
+        {
+            await Polygon_MouseOver.InvokeAsync(args);
+        }
+
+        [JSInvokable]
+        public async Task PolygonMouseUp(MapPolyMouseEvent args)
+        {
+            await Polygon_MouseUp.InvokeAsync(args);
         }
 
         private async void SetMapEventListeners()
