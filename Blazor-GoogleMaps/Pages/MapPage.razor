@@ -13,6 +13,25 @@
                     {
                         <button class="btn btn-block btn-outline-info" @onclick="EndDrawing">End Drawing</button>
                     }
+                    <hr />
+                    <h5>Add Circle Section</h5>
+                    <label>Center Point</label>
+                    <label>Latitude:</label>
+                    <input class="form-control" @bind="CircleSection.Center.lat" type="number" />
+                    <label>Longitude:</label>
+                    <input class="form-control" @bind="CircleSection.Center.lng" type="number" />
+
+                    <label>Radius (Meters):</label>
+                    <input class="form-control" @bind="CircleSection.Radius" type="number" />
+
+                    <label>Area (Degrees):</label>
+                    <input class="form-control" @bind="CircleSection.Degrees" min="1" max="359" type="number" />
+
+                    <label>Offset (Degrees):</label>
+                    <input class="form-control" @bind="CircleSection.RotateDegrees" min="0" max="360" type="number" />
+
+                    <button class="btn btn-block btn-outline-info" @onclick="AddCircleSection">Add Section</button>
+                    <button class="btn btn-block btn-outline-primary" @onclick="UpdateCircleSection">Update Section</button>                    
                 }
             </div>
         </div>
@@ -29,6 +48,7 @@
     </div>
     @code {
         private Map MapItem { get; set; }
+        private MapCircleSection CircleSection { get; set; } = new();
         private void MapClicked(MapLatLng point)
         {
             MapItem.AddMarker(new MapMarker()
@@ -40,16 +60,29 @@
                     position = point,
                     opacity = 1,
                     visible = true,
-                    
+
                 }
             });
+        }
+
+        private void AddCircleSection()
+        {
+            CircleSection.Id = Guid.NewGuid();
+            MapItem.AddCircleSection(CircleSection);
+
+
+        }
+
+        private void UpdateCircleSection()
+        {
+            MapItem.UpdateCircleSection(CircleSection);
         }
 
         private void StartDrawing()
         {
             MapItem.StartDrawing();
         }
-        
+
         private void EndDrawing()
         {
             MapItem.EndDrawing();

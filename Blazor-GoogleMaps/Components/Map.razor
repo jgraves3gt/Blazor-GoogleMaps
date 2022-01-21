@@ -12,227 +12,227 @@
 
     @code {
 
-            //Properties
-            [Parameter]
-            public string APIKey { get; set; }
+        //Properties
+        [Parameter]
+        public string APIKey { get; set; }
 
-            [Parameter]
-            public double StartLat { get; set; } = 41.739081;
+        [Parameter]
+        public double StartLat { get; set; } = 41.739081;
 
-            [Parameter]
-            public double StartLon { get; set; } = -111.834756;
+        [Parameter]
+        public double StartLon { get; set; } = -111.834756;
 
-            [Parameter]
-            public string MapId { get; set; }
+        [Parameter]
+        public string MapId { get; set; }
 
-            [Parameter]
-            public object MapOptions { get; set; } = new { center = new MapLatLng { lat = 41.739081, lng = -111.834756 }, zoom = 15 };
+        [Parameter]
+        public object MapOptions { get; set; } = new { center = new MapLatLng { lat = 41.739081, lng = -111.834756 }, zoom = 15 };
 
-            //
-            //Map Events
-            //
-            [Parameter]
-            public EventCallback<MapLatLng> Map_Click { get; set; }
-            [Parameter]
-            public EventCallback<MapLatLng> Map_DoubleClick { get; set; }
-            [Parameter]
-            public EventCallback<MapLatLng> Map_RightClick { get; set; }
-            [Parameter]
-            public EventCallback Map_BoundsChanged { get; set; }
-            [Parameter]
-            public EventCallback Map_CenterChanged { get; set; }
-            [Parameter]
-            public EventCallback Map_Drag { get; set; }
-            [Parameter]
-            public EventCallback Map_DragEnd { get; set; }
-            [Parameter]
-            public EventCallback Map_DragStart { get; set; }
-            [Parameter]
-            public EventCallback Map_HeadingChanged { get; set; }
-            [Parameter]
-            public EventCallback Map_Idle { get; set; }
-            [Parameter]
-            public EventCallback Map_MapTypeIdChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapLatLng> Map_MouseMove { get; set; }
-            [Parameter]
-            public EventCallback<MapLatLng> Map_MouseOut { get; set; }
-            [Parameter]
-            public EventCallback<MapLatLng> Map_MouseOver { get; set; }
-            [Parameter]
-            public EventCallback Map_ProjectionChanged { get; set; }
-            [Parameter]
-            public EventCallback Map_Resize { get; set; }
-            [Parameter]
-            public EventCallback Map_ZoomChanged { get; set; }
-            [Parameter]
-            public EventCallback Map_TilesLoaded { get; set; }
-            [Parameter]
-            public EventCallback Map_TiltChanged { get; set; }
-            //
-            //Marker Events
-            //
-            [Parameter]
-            public EventCallback<MapMarker> Marker_AnimationChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Marker_Click { get; set; }
-            [Parameter]
-            public EventCallback<MapMarker> Marker_ClickableChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Marker_ContextMenu { get; set; }
-            [Parameter]
-            public EventCallback<MapMarker> Marker_CursorChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Marker_DBLClick { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Marker_Drag { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Marker_DragEnd { get; set; }
-            [Parameter]
-            public EventCallback<MapMarker> Marker_DraggableChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Marker_DragStart { get; set; }
-            [Parameter]
-            public EventCallback<MapMarker> Marker_FlatChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapMarker> Marker_IconChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Marker_MouseDown { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Marker_MouseOut { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Marker_MouseOver { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Marker_MouseUp { get; set; }
-            [Parameter]
-            public EventCallback<MapMarker> Marker_PositionChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapMarker> Marker_ShapeChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapMarker> Marker_TitleChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapMarker> Marker_VisibleChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapMarker> Marker_ZIndexChanged { get; set; }
-            //
-            //Polygon Events
-            //
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_Click { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_ContextMenu { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_DBLClick { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_Drag { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_DragEnd { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_DragStart { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_MouseDown { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_MouseMove { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_MouseOut { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_MouseOver { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> Polygon_MouseUp { get; set; }
-            //
-            //PolyLine Events
-            //
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_Click { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_ContextMenu { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_DBLClick { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_Drag { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_DragEnd { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_DragStart { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_MouseDown { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_MouseMove { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_MouseOut { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_MouseOver { get; set; }
-            [Parameter]
-            public EventCallback<MapPolyMouseEvent> PolyLine_MouseUp { get; set; }
-            //
-            //Rectangle Events
-            //
-            [Parameter]
-            public EventCallback<MapRectangle> Rectangle_BoundsChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_Click { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_DoubleClick { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_Drag { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_DragEnd { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_DragStart { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_MouseDown { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_MouseMove { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_MouseOut { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_MouseOver { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_MouseUp { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Rectangle_ContextMenu { get; set; }
-            //
-            //Circle Events
-            //
-            [Parameter]
-            public EventCallback<MapCircle> Circle_CenterChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapCircle> Circle_RadiusChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_Click { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_DoubleClick { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_Drag { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_DragEnd { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_DragStart { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_MouseDown { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_MouseMove { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_MouseOut { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_MouseOver { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_MouseUp { get; set; }
-            [Parameter]
-            public EventCallback<MapElementMouseEvent> Circle_RightClick { get; set; }
-            //
-            //Info Window Events
-            //
-            [Parameter]
-            public EventCallback<MapInfoWindow> InfoWindow_CloseClick { get; set; }
-            [Parameter]
-            public EventCallback<MapInfoWindow> InfoWindow_ContentChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapInfoWindow> InfoWindow_DomReady { get; set; }
-            [Parameter]
-            public EventCallback<MapInfoWindow> InfoWindow_PositionChanged { get; set; }
-            [Parameter]
-            public EventCallback<MapInfoWindow> InfoWindow_ZIndexChanged { get; set; }
+        //
+        //Map Events
+        //
+        [Parameter]
+        public EventCallback<MapLatLng> Map_Click { get; set; }
+        [Parameter]
+        public EventCallback<MapLatLng> Map_DoubleClick { get; set; }
+        [Parameter]
+        public EventCallback<MapLatLng> Map_RightClick { get; set; }
+        [Parameter]
+        public EventCallback Map_BoundsChanged { get; set; }
+        [Parameter]
+        public EventCallback Map_CenterChanged { get; set; }
+        [Parameter]
+        public EventCallback Map_Drag { get; set; }
+        [Parameter]
+        public EventCallback Map_DragEnd { get; set; }
+        [Parameter]
+        public EventCallback Map_DragStart { get; set; }
+        [Parameter]
+        public EventCallback Map_HeadingChanged { get; set; }
+        [Parameter]
+        public EventCallback Map_Idle { get; set; }
+        [Parameter]
+        public EventCallback Map_MapTypeIdChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapLatLng> Map_MouseMove { get; set; }
+        [Parameter]
+        public EventCallback<MapLatLng> Map_MouseOut { get; set; }
+        [Parameter]
+        public EventCallback<MapLatLng> Map_MouseOver { get; set; }
+        [Parameter]
+        public EventCallback Map_ProjectionChanged { get; set; }
+        [Parameter]
+        public EventCallback Map_Resize { get; set; }
+        [Parameter]
+        public EventCallback Map_ZoomChanged { get; set; }
+        [Parameter]
+        public EventCallback Map_TilesLoaded { get; set; }
+        [Parameter]
+        public EventCallback Map_TiltChanged { get; set; }
+        //
+        //Marker Events
+        //
+        [Parameter]
+        public EventCallback<MapMarker> Marker_AnimationChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Marker_Click { get; set; }
+        [Parameter]
+        public EventCallback<MapMarker> Marker_ClickableChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Marker_ContextMenu { get; set; }
+        [Parameter]
+        public EventCallback<MapMarker> Marker_CursorChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Marker_DBLClick { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Marker_Drag { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Marker_DragEnd { get; set; }
+        [Parameter]
+        public EventCallback<MapMarker> Marker_DraggableChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Marker_DragStart { get; set; }
+        [Parameter]
+        public EventCallback<MapMarker> Marker_FlatChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapMarker> Marker_IconChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Marker_MouseDown { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Marker_MouseOut { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Marker_MouseOver { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Marker_MouseUp { get; set; }
+        [Parameter]
+        public EventCallback<MapMarker> Marker_PositionChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapMarker> Marker_ShapeChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapMarker> Marker_TitleChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapMarker> Marker_VisibleChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapMarker> Marker_ZIndexChanged { get; set; }
+        //
+        //Polygon Events
+        //
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_Click { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_ContextMenu { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_DBLClick { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_Drag { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_DragEnd { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_DragStart { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_MouseDown { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_MouseMove { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_MouseOut { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_MouseOver { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> Polygon_MouseUp { get; set; }
+        //
+        //PolyLine Events
+        //
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_Click { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_ContextMenu { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_DBLClick { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_Drag { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_DragEnd { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_DragStart { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_MouseDown { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_MouseMove { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_MouseOut { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_MouseOver { get; set; }
+        [Parameter]
+        public EventCallback<MapPolyMouseEvent> PolyLine_MouseUp { get; set; }
+        //
+        //Rectangle Events
+        //
+        [Parameter]
+        public EventCallback<MapRectangle> Rectangle_BoundsChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_Click { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_DoubleClick { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_Drag { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_DragEnd { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_DragStart { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_MouseDown { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_MouseMove { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_MouseOut { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_MouseOver { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_MouseUp { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Rectangle_ContextMenu { get; set; }
+        //
+        //Circle Events
+        //
+        [Parameter]
+        public EventCallback<MapCircle> Circle_CenterChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapCircle> Circle_RadiusChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_Click { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_DoubleClick { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_Drag { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_DragEnd { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_DragStart { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_MouseDown { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_MouseMove { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_MouseOut { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_MouseOver { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_MouseUp { get; set; }
+        [Parameter]
+        public EventCallback<MapElementMouseEvent> Circle_RightClick { get; set; }
+        //
+        //Info Window Events
+        //
+        [Parameter]
+        public EventCallback<MapInfoWindow> InfoWindow_CloseClick { get; set; }
+        [Parameter]
+        public EventCallback<MapInfoWindow> InfoWindow_ContentChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapInfoWindow> InfoWindow_DomReady { get; set; }
+        [Parameter]
+        public EventCallback<MapInfoWindow> InfoWindow_PositionChanged { get; set; }
+        [Parameter]
+        public EventCallback<MapInfoWindow> InfoWindow_ZIndexChanged { get; set; }
 
         private List<MapMarker> Markers { get; set; } = new();
         private List<MapInfoWindow> InfoWindows { get; set; } = new();
@@ -240,6 +240,7 @@
         private List<MapPolyLine> PolyLines { get; set; } = new();
         private List<MapRectangle> Rectangles { get; set; } = new();
         private List<MapCircle> Circles { get; set; } = new();
+        private List<MapCircleSection> CircleSections { get; set; } = new();
 
         private DotNetObjectReference<Map>? objRef;
 
@@ -252,6 +253,18 @@
             objRef = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("initMap", MapId, objRef, MapOptions);
             SetMapEventListeners();
+        }
+
+        public async void AddCircleSection(MapCircleSection section)
+        {
+            CircleSections.Add(section);
+            await JS.InvokeVoidAsync("addCircleSection", MapId, section);
+        }
+
+        public async void UpdateCircleSection(MapCircleSection section)
+        {
+            CircleSections.Add(section);
+            await JS.InvokeVoidAsync("updateCircleSection", section);
         }
 
         public MapMarker GetMarker(Guid Id)
@@ -1065,7 +1078,7 @@
             return guid;
         }
 
-        
+
 
 
         private async void SetMapEventListeners()
