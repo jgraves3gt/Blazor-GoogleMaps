@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Description>A blazor library to utilize the Google Maps V3 JavaScript APIs.</Description>
+    <Authors>JGraves</Authors>
+    <PackageTags>blazor google-maps</PackageTags>
+  </PropertyGroup>
+
+  
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.11" />
+  </ItemGroup>
+
+</Project>
