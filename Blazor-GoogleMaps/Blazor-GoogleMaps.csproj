@@ -12,4 +12,12 @@
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorGoogleMapsV3\BlazorGoogleMapsV3.csproj" />
+  </ItemGroup>
+
 </Project>
