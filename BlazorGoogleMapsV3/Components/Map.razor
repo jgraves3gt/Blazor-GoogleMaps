@@ -25,7 +25,7 @@
     public string MapId { get; set; }
 
     [Parameter]
-    public object MapOptions { get; set; } = new { center = new MapLatLng { lat = 41.739081, lng = -111.834756 }, zoom = 15 };
+    public object MapOptions { get; set; } = new { center = new MapLatLng { lat = 41.739081, lng = -111.834756 }, zoom = 15, tilt = 0 };
 
     //
     //Map Events
@@ -236,6 +236,7 @@
     private List<MapMarker> Markers { get; set; } = new();
     private List<MapInfoWindow> InfoWindows { get; set; } = new();
     private List<MapPolygon> Polygons { get; set; } = new();
+    private List<MapCircleSection> CircleSections { get; set; } = new();
     private List<MapPolyLine> PolyLines { get; set; } = new();
     private List<MapRectangle> Rectangles { get; set; } = new();
     private List<MapCircle> Circles { get; set; } = new();
@@ -285,9 +286,42 @@
         await JS.InvokeVoidAsync("updateMapPolygon", Id, options);
     }
 
-    public async void StartDrawing(MapDrawingManagerOptions options = null)
+    public async void StartDrawing(object options = null)
     {
         IsDrawing = true;
+
+        if (options is null)
+        {
+            options = new 
+            {
+                drawingControl = true,
+                circleOptions = new
+                {
+                    editable = true,
+                    draggable = true
+                },
+                markerOptions = new
+                {
+                    editable = true,
+                    draggable = true
+                },
+                polygonOptions = new
+                {
+                    editable = true,
+                    draggable = true
+                },
+                polylineOptions = new
+                {
+                    editable = true,
+                    draggable = true
+                },
+                rectangleOptions = new
+                {
+                    editable = true,
+                    draggable = true
+                },
+            };
+        }
         await JS.InvokeVoidAsync("startDrawing", MapId, options);
     }
 
@@ -295,6 +329,24 @@
     {
         IsDrawing = false;
         await JS.InvokeVoidAsync("endDrawing", MapId);
+    }
+
+    public async void AddCircleSection(MapCircleSection Section)
+    {
+        CircleSections.Add(Section);
+        await JS.InvokeVoidAsync("addCircleSection", MapId, Section);
+    }
+
+    public async void UpdateCircleSection(MapCircleSection Section)
+    {
+        var section = CircleSections.FirstOrDefault(s => s.Id == Section.Id);
+        section.Center = Section.Center;
+        section.Degrees = Section.Degrees;
+        section.Options = Section.Options;
+        section.Radius = Section.Radius;
+        section.RotateDegrees = Section.RotateDegrees;
+
+        await JS.InvokeVoidAsync("updateCircleSection", section);
     }
 
     //Map Events

@@ -6,6 +6,7 @@ let polygons = [];
 let polyLines = [];
 let rectangles = [];
 let circles = [];
+let circleSections = [];
 let DotNetMapRefs = [];
 
 function initMap(mapId, DNMapRef, mapOptions) {
@@ -213,6 +214,45 @@ function updateMapPolyLine(circleId, circleOptions) {
     if (circle) {
         circle.setOptions(circleOptions);
     }
+}
+
+//Add Circle Section
+function addCircleSection(mapId, mapCircleSection) {
+    var section = new google.maps.Polygon(mapCircleSection.options);
+    var map = maps[mapId];
+
+    if (map) {
+        section.setMap(map);
+    }
+
+    var sectionPath = [];
+    sectionPath.push(mapCircleSection.center);
+
+    for (i = 0; i < mapCircleSection.degrees; i++) {
+        var nextPoint = google.maps.geometry.spherical.computeOffset(mapCircleSection.center, mapCircleSection.radius, mapCircleSection.rotateDegrees + i);
+        sectionPath.push(nextPoint);
+    }
+
+    section.setPath(sectionPath);
+    circleSections[mapCircleSection.id] = section;
+}
+
+//Update Circle Section
+function updateCircleSection(mapCircleSection) {
+    var section = circleSections[mapCircleSection.id];
+
+    section.setOptions(mapCircleSection.options);
+
+    var sectionPath = [];
+    sectionPath.push(mapCircleSection.center);
+
+    for (i = 0; i < mapCircleSection.degrees; i++) {
+        var nextPoint = google.maps.geometry.spherical.computeOffset(mapCircleSection.center, mapCircleSection.radius, mapCircleSection.rotateDegrees + i);
+        sectionPath.push(nextPoint);
+    }
+
+    section.setPath(sectionPath);
+    circleSections[mapCircleSection.id] = section;
 }
 
 function setInfoWindowListeners(infoWindowId, MapId) {
