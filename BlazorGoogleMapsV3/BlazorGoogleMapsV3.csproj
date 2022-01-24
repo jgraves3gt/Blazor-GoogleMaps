@@ -5,6 +5,8 @@
     <Description>A blazor library to utilize the Google Maps V3 JavaScript APIs.</Description>
     <Authors>JGraves</Authors>
     <PackageTags>blazor google-maps</PackageTags>
+    <PackageProjectUrl>https://github.com/jgraves3gt/Blazor-GoogleMaps</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jgraves3gt/Blazor-GoogleMaps</RepositoryUrl>
   </PropertyGroup>
 
   
