@@ -1,2 +1,3 @@
 # Blazor-GoogleMaps
-Blazor implementation of Google Maps SDK
+Blazor implementation of Google Maps JavaScript SDK
+
