@@ -1,0 +1,1082 @@
+﻿@inject IJSRuntime JS
+
+<style>
+    .map {
+        height: 100%;
+        width: 100%;
+    }
+</style>
+<div class="map" id="@MapId"></div>
+
+
+@code {
+
+    //Properties
+    [Parameter]
+    public string APIKey { get; set; }
+
+    [Parameter]
+    public double StartLat { get; set; } = 41.739081;
+
+    [Parameter]
+    public double StartLon { get; set; } = -111.834756;
+
+    [Parameter]
+    public string MapId { get; set; }
+
+    [Parameter]
+    public object MapOptions { get; set; } = new { center = new MapLatLng { lat = 41.739081, lng = -111.834756 }, zoom = 15 };
+
+    //
+    //Map Events
+    //
+    [Parameter]
+    public EventCallback<MapLatLng> Map_Click { get; set; }
+    [Parameter]
+    public EventCallback<MapLatLng> Map_DoubleClick { get; set; }
+    [Parameter]
+    public EventCallback<MapLatLng> Map_RightClick { get; set; }
+    [Parameter]
+    public EventCallback Map_BoundsChanged { get; set; }
+    [Parameter]
+    public EventCallback Map_CenterChanged { get; set; }
+    [Parameter]
+    public EventCallback Map_Drag { get; set; }
+    [Parameter]
+    public EventCallback Map_DragEnd { get; set; }
+    [Parameter]
+    public EventCallback Map_DragStart { get; set; }
+    [Parameter]
+    public EventCallback Map_HeadingChanged { get; set; }
+    [Parameter]
+    public EventCallback Map_Idle { get; set; }
+    [Parameter]
+    public EventCallback Map_MapTypeIdChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapLatLng> Map_MouseMove { get; set; }
+    [Parameter]
+    public EventCallback<MapLatLng> Map_MouseOut { get; set; }
+    [Parameter]
+    public EventCallback<MapLatLng> Map_MouseOver { get; set; }
+    [Parameter]
+    public EventCallback Map_ProjectionChanged { get; set; }
+    [Parameter]
+    public EventCallback Map_Resize { get; set; }
+    [Parameter]
+    public EventCallback Map_ZoomChanged { get; set; }
+    [Parameter]
+    public EventCallback Map_TilesLoaded { get; set; }
+    [Parameter]
+    public EventCallback Map_TiltChanged { get; set; }
+    //
+    //Marker Events
+    //
+    [Parameter]
+    public EventCallback<MapMarker> Marker_AnimationChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Marker_Click { get; set; }
+    [Parameter]
+    public EventCallback<MapMarker> Marker_ClickableChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Marker_ContextMenu { get; set; }
+    [Parameter]
+    public EventCallback<MapMarker> Marker_CursorChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Marker_DBLClick { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Marker_Drag { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Marker_DragEnd { get; set; }
+    [Parameter]
+    public EventCallback<MapMarker> Marker_DraggableChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Marker_DragStart { get; set; }
+    [Parameter]
+    public EventCallback<MapMarker> Marker_FlatChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapMarker> Marker_IconChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Marker_MouseDown { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Marker_MouseOut { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Marker_MouseOver { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Marker_MouseUp { get; set; }
+    [Parameter]
+    public EventCallback<MapMarker> Marker_PositionChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapMarker> Marker_ShapeChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapMarker> Marker_TitleChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapMarker> Marker_VisibleChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapMarker> Marker_ZIndexChanged { get; set; }
+    //
+    //Polygon Events
+    //
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_Click { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_ContextMenu { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_DBLClick { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_Drag { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_DragEnd { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_DragStart { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_MouseDown { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_MouseMove { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_MouseOut { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_MouseOver { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> Polygon_MouseUp { get; set; }
+    //
+    //PolyLine Events
+    //
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_Click { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_ContextMenu { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_DBLClick { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_Drag { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_DragEnd { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_DragStart { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_MouseDown { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_MouseMove { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_MouseOut { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_MouseOver { get; set; }
+    [Parameter]
+    public EventCallback<MapPolyMouseEvent> PolyLine_MouseUp { get; set; }
+    //
+    //Rectangle Events
+    //
+    [Parameter]
+    public EventCallback<MapRectangle> Rectangle_BoundsChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_Click { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_DoubleClick { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_Drag { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_DragEnd { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_DragStart { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_MouseDown { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_MouseMove { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_MouseOut { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_MouseOver { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_MouseUp { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Rectangle_ContextMenu { get; set; }
+    //
+    //Circle Events
+    //
+    [Parameter]
+    public EventCallback<MapCircle> Circle_CenterChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapCircle> Circle_RadiusChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_Click { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_DoubleClick { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_Drag { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_DragEnd { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_DragStart { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_MouseDown { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_MouseMove { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_MouseOut { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_MouseOver { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_MouseUp { get; set; }
+    [Parameter]
+    public EventCallback<MapElementMouseEvent> Circle_RightClick { get; set; }
+    //
+    //Info Window Events
+    //
+    [Parameter]
+    public EventCallback<MapInfoWindow> InfoWindow_CloseClick { get; set; }
+    [Parameter]
+    public EventCallback<MapInfoWindow> InfoWindow_ContentChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapInfoWindow> InfoWindow_DomReady { get; set; }
+    [Parameter]
+    public EventCallback<MapInfoWindow> InfoWindow_PositionChanged { get; set; }
+    [Parameter]
+    public EventCallback<MapInfoWindow> InfoWindow_ZIndexChanged { get; set; }
+
+    private List<MapMarker> Markers { get; set; } = new();
+    private List<MapInfoWindow> InfoWindows { get; set; } = new();
+    private List<MapPolygon> Polygons { get; set; } = new();
+    private List<MapPolyLine> PolyLines { get; set; } = new();
+    private List<MapRectangle> Rectangles { get; set; } = new();
+    private List<MapCircle> Circles { get; set; } = new();
+
+    private DotNetObjectReference<Map>? objRef;
+
+    public bool IsDrawing { get; private set; } = false;
+
+    //Methods
+
+    private async void InitializeMap()
+    {
+        objRef = DotNetObjectReference.Create(this);
+        await JS.InvokeVoidAsync("initMap", MapId, objRef, MapOptions);
+        SetMapEventListeners();
+    }
+
+    public MapMarker GetMarker(Guid Id)
+    {
+        return Markers.FirstOrDefault(m => m.Id == Id);
+    }
+
+    public async void AddMarker(MapMarker marker)
+    {
+        Markers.Add(marker);
+        await JS.InvokeVoidAsync("addMapMarker", MapId, marker);
+    }
+
+    public async void UpdateMarker(Guid Id, MapMarkerOptions options)
+    {
+        await JS.InvokeVoidAsync("updateMapMarker", Id, options);
+    }
+
+    public MapPolygon GetPolygon(Guid Id)
+    {
+        return Polygons.FirstOrDefault(p => p.Id == Id);
+    }
+
+    public async void AddPolygon(MapPolygon polygon)
+    {
+        Polygons.Add(polygon);
+        await JS.InvokeVoidAsync("addMapPolygon", MapId, polygon);
+    }
+
+    public async void UpdatePolygon(Guid Id, MapPolygonOptions options)
+    {
+        await JS.InvokeVoidAsync("updateMapPolygon", Id, options);
+    }
+
+    public async void StartDrawing(MapDrawingManagerOptions options = null)
+    {
+        IsDrawing = true;
+        await JS.InvokeVoidAsync("startDrawing", MapId, options);
+    }
+
+    public async void EndDrawing()
+    {
+        IsDrawing = false;
+        await JS.InvokeVoidAsync("endDrawing", MapId);
+    }
+
+    //Map Events
+    [JSInvokable]
+    public async Task MapClicked(double lat, double lon)
+    {
+        await Map_Click.InvokeAsync(new MapLatLng() { lat = lat, lng = lon });
+    }
+
+    [JSInvokable]
+    public async Task MapDoubleClicked(double lat, double lon)
+    {
+        await Map_DoubleClick.InvokeAsync(new MapLatLng() { lat = lat, lng = lon });
+    }
+
+    [JSInvokable]
+    public async Task MapRightClicked(double lat, double lon)
+    {
+        await Map_RightClick.InvokeAsync(new MapLatLng() { lat = lat, lng = lon });
+    }
+
+    [JSInvokable]
+    public async Task MapBoundsChanged()
+    {
+        await Map_BoundsChanged.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapCenterChanged()
+    {
+        await Map_CenterChanged.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapDrag()
+    {
+        await Map_Drag.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapDragEnd()
+    {
+        await Map_DragEnd.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapDragStart()
+    {
+        await Map_DragStart.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapIdle()
+    {
+        await Map_Idle.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapMapTypeIdChanged()
+    {
+        await Map_MapTypeIdChanged.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapMouseMove(double lat, double lon)
+    {
+        await Map_MouseMove.InvokeAsync(new MapLatLng() { lat = lat, lng = lon });
+    }
+
+    [JSInvokable]
+    public async Task MapMouseOut(double lat, double lon)
+    {
+        await Map_MouseOut.InvokeAsync(new MapLatLng() { lat = lat, lng = lon });
+    }
+
+    [JSInvokable]
+    public async Task MapMouseOver(double lat, double lon)
+    {
+        await Map_MouseOver.InvokeAsync(new MapLatLng() { lat = lat, lng = lon });
+    }
+
+    [JSInvokable]
+    public async Task MapProjectionChanged()
+    {
+        await Map_ProjectionChanged.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapResize()
+    {
+        await Map_Resize.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapZoomChanged()
+    {
+        await Map_ZoomChanged.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapTilesLoaded()
+    {
+        await Map_TilesLoaded.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapTiltChanged()
+    {
+        await Map_TiltChanged.InvokeAsync();
+    }
+
+    [JSInvokable]
+    public async Task MapHeadingChanged()
+    {
+        await Map_HeadingChanged.InvokeAsync();
+    }
+
+    //Marker Events
+    [JSInvokable]
+    public async Task MarkerAnimationChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_AnimationChanged.InvokeAsync(marker);
+    }
+    [JSInvokable]
+    public async Task MarkerClick(Guid MarkerId, MapLatLng coords)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_Click.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = MarkerId
+        });
+    }
+
+    [JSInvokable]
+    public async Task MarkerClickableChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_ClickableChanged.InvokeAsync(marker);
+    }
+
+    [JSInvokable]
+    public async Task MarkerContextMenu(Guid MarkerId, MapLatLng coords)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_ContextMenu.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = MarkerId
+        });
+    }
+
+    [JSInvokable]
+    public async Task MarkerCursorChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_CursorChanged.InvokeAsync(marker);
+    }
+
+    [JSInvokable]
+    public async Task MarkerDoubleClick(Guid MarkerId, MapLatLng coords)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_DBLClick.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = MarkerId
+        });
+    }
+
+    [JSInvokable]
+    public async Task MarkerDrag(Guid MarkerId, MapLatLng coords)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_Drag.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = MarkerId
+        });
+    }
+    [JSInvokable]
+    public async Task MarkerDragEnd(Guid MarkerId, MapLatLng coords)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_DragEnd.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = MarkerId
+        });
+    }
+
+    [JSInvokable]
+    public async Task MarkerDraggableChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_DraggableChanged.InvokeAsync(marker);
+    }
+    [JSInvokable]
+    public async Task MarkerDragStart(Guid MarkerId, MapLatLng coords)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_DragStart.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = MarkerId
+        });
+    }
+
+    [JSInvokable]
+    public async Task MarkerFlatChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_FlatChanged.InvokeAsync(marker);
+    }
+
+    [JSInvokable]
+    public async Task MarkerIconChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_IconChanged.InvokeAsync(marker);
+    }
+
+    [JSInvokable]
+    public async Task MarkerMouseDown(Guid MarkerId, MapLatLng coords)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_MouseDown.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = MarkerId
+        });
+    }
+
+    [JSInvokable]
+    public async Task MarkerMouseOut(Guid MarkerId, MapLatLng coords)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_MouseOut.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = MarkerId
+        });
+    }
+
+    [JSInvokable]
+    public async Task MarkerMouseOver(Guid MarkerId, MapLatLng coords)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_MouseOver.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = MarkerId
+        });
+    }
+
+    [JSInvokable]
+    public async Task MarkerMouseUp(Guid MarkerId, MapLatLng coords)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_MouseUp.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = MarkerId
+        });
+    }
+
+    [JSInvokable]
+    public async Task MarkerPositionChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_PositionChanged.InvokeAsync(marker);
+    }
+
+    [JSInvokable]
+    public async Task MarkerShapeChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_ShapeChanged.InvokeAsync(marker);
+    }
+
+    [JSInvokable]
+    public async Task MarkerTitleChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_TitleChanged.InvokeAsync(marker);
+    }
+
+    [JSInvokable]
+    public async Task MarkerVisibleChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_VisibleChanged.InvokeAsync(marker);
+    }
+
+    [JSInvokable]
+    public async Task MarkerZIndexChanged(Guid MarkerId)
+    {
+        var marker = Markers.FirstOrDefault(m => m.Id == MarkerId);
+        await Marker_ZIndexChanged.InvokeAsync(marker);
+    }
+
+    //
+    //Polygon Events
+    //
+    [JSInvokable]
+    public async Task PolygonClick(MapPolyMouseEvent args)
+    {
+        await Polygon_Click.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolygonContextMenu(MapPolyMouseEvent args)
+    {
+        await Polygon_ContextMenu.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolygonDoubleClick(MapPolyMouseEvent args)
+    {
+        await Polygon_DBLClick.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolygonDrag(MapPolyMouseEvent args)
+    {
+        await Polygon_Drag.InvokeAsync(args);
+    }
+    [JSInvokable]
+    public async Task PolygonDragEnd(MapPolyMouseEvent args)
+    {
+        await Polygon_DragEnd.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolygonDragStart(MapPolyMouseEvent args)
+    {
+        await Polygon_DragStart.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolygonMouseMove(MapPolyMouseEvent args)
+    {
+        await Polygon_MouseDown.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolygonMouseDown(MapPolyMouseEvent args)
+    {
+        await Polygon_MouseDown.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolygonMouseOut(MapPolyMouseEvent args)
+    {
+        await Polygon_MouseOut.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolygonMouseOver(MapPolyMouseEvent args)
+    {
+        await Polygon_MouseOver.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolygonMouseUp(MapPolyMouseEvent args)
+    {
+        await Polygon_MouseUp.InvokeAsync(args);
+    }
+
+    //
+    //PolyLine Events
+    //
+    [JSInvokable]
+    public async Task PolyLineClick(MapPolyMouseEvent args)
+    {
+        await PolyLine_Click.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolyLineContextMenu(MapPolyMouseEvent args)
+    {
+        await PolyLine_ContextMenu.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolyLineDoubleClick(MapPolyMouseEvent args)
+    {
+        await PolyLine_DBLClick.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolyLineDrag(MapPolyMouseEvent args)
+    {
+        await PolyLine_Drag.InvokeAsync(args);
+    }
+    [JSInvokable]
+    public async Task PolyLineDragEnd(MapPolyMouseEvent args)
+    {
+        await PolyLine_DragEnd.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolyLineDragStart(MapPolyMouseEvent args)
+    {
+        await PolyLine_DragStart.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolyLineMouseMove(MapPolyMouseEvent args)
+    {
+        await PolyLine_MouseDown.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolyLineMouseDown(MapPolyMouseEvent args)
+    {
+        await PolyLine_MouseDown.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolyLineMouseOut(MapPolyMouseEvent args)
+    {
+        await PolyLine_MouseOut.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolyLineMouseOver(MapPolyMouseEvent args)
+    {
+        await PolyLine_MouseOver.InvokeAsync(args);
+    }
+
+    [JSInvokable]
+    public async Task PolyLineMouseUp(MapPolyMouseEvent args)
+    {
+        await PolyLine_MouseUp.InvokeAsync(args);
+    }
+
+    //
+    //Rectangle Events
+    //
+    [JSInvokable]
+    public async Task RectangleBoundsChanged(Guid RectangleId)
+    {
+        var rect = Rectangles.FirstOrDefault(r => r.Id == RectangleId);
+        await Rectangle_BoundsChanged.InvokeAsync(rect);
+    }
+
+    [JSInvokable]
+    public async Task RectangleClick(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_Click.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task RectangleContextMenu(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_ContextMenu.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task RectangleDoubleClick(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_DoubleClick.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task RectangleDrag(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_Drag.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task RectangleDragEnd(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_DragEnd.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task RectangleDragStart(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_DragStart.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task RectangleMouseMove(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_MouseMove.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task RectangleMouseDown(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_MouseDown.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task RectangleMouseOut(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_MouseOut.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task RectangleMouseOver(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_MouseOver.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task RectangleMouseUp(Guid RectangleId, MapLatLng coords)
+    {
+        await Rectangle_MouseUp.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = RectangleId
+        });
+    }
+
+    //
+    //Circle Events
+    //
+    [JSInvokable]
+    public async Task CircleCenterChanged(Guid CircleId)
+    {
+        var rect = Circles.FirstOrDefault(r => r.Id == CircleId);
+        await Circle_CenterChanged.InvokeAsync(rect);
+    }
+
+    [JSInvokable]
+    public async Task CircleRadiusChanged(Guid CircleId)
+    {
+        var rect = Circles.FirstOrDefault(r => r.Id == CircleId);
+        await Circle_RadiusChanged.InvokeAsync(rect);
+    }
+
+    [JSInvokable]
+    public async Task CircleClick(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_Click.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task CircleRightClick(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_RightClick.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task CircleDoubleClick(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_DoubleClick.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task CircleDrag(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_Drag.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task CircleDragEnd(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_DragEnd.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task CircleDragStart(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_DragStart.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task CircleMouseMove(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_MouseMove.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task CircleMouseDown(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_MouseDown.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task CircleMouseOut(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_MouseOut.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task CircleMouseOver(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_MouseOver.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    [JSInvokable]
+    public async Task CircleMouseUp(Guid CircleId, MapLatLng coords)
+    {
+        await Circle_MouseUp.InvokeAsync(new MapElementMouseEvent()
+        {
+            Coords = coords,
+            ElementId = CircleId
+        });
+    }
+
+    //
+    //Info Window Events
+    //
+
+    [JSInvokable]
+    public async Task InfoWindowCloseClick(Guid InfoWindowId)
+    {
+        var infoWindow = InfoWindows.FirstOrDefault(w => w.Id == InfoWindowId);
+        await InfoWindow_CloseClick.InvokeAsync(infoWindow);
+    }
+
+    [JSInvokable]
+    public async Task InfoWindowContentChanged(Guid InfoWindowId)
+    {
+        var infoWindow = InfoWindows.FirstOrDefault(w => w.Id == InfoWindowId);
+        await InfoWindow_ContentChanged.InvokeAsync(infoWindow);
+    }
+
+    [JSInvokable]
+    public async Task InfoWindowDomReady(Guid InfoWindowId)
+    {
+        var infoWindow = InfoWindows.FirstOrDefault(w => w.Id == InfoWindowId);
+        await InfoWindow_DomReady.InvokeAsync(infoWindow);
+    }
+
+    [JSInvokable]
+    public async Task InfoWindowPositionChanged(Guid InfoWindowId)
+    {
+        var infoWindow = InfoWindows.FirstOrDefault(w => w.Id == InfoWindowId);
+        await InfoWindow_PositionChanged.InvokeAsync(infoWindow);
+    }
+
+    [JSInvokable]
+    public async Task InfoWindowZIndexChanged(Guid InfoWindowId)
+    {
+        var infoWindow = InfoWindows.FirstOrDefault(w => w.Id == InfoWindowId);
+        await InfoWindow_ZIndexChanged.InvokeAsync(infoWindow);
+    }
+
+    [JSInvokable]
+    public async Task<Guid> AddCircleFromDrawingManager()
+    {
+        var guid = Guid.NewGuid();
+        Circles.Add(new() { Id = guid, Options = null });
+
+        return guid;
+    }
+
+    [JSInvokable]
+    public async Task<Guid> AddMarkerFromDrawingManager()
+    {
+        var guid = Guid.NewGuid();
+        Markers.Add(new() { Id = guid, Options = null });
+
+        return guid;
+    }
+
+    [JSInvokable]
+    public async Task<Guid> AddPolygonFromDrawingManager()
+    {
+        var guid = Guid.NewGuid();
+        Polygons.Add(new() { Id = guid, Options = null });
+
+        return guid;
+    }
+
+    [JSInvokable]
+    public async Task<Guid> AddPolyLineFromDrawingManager()
+    {
+        var guid = Guid.NewGuid();
+        PolyLines.Add(new() { Id = guid, Options = null });
+
+        return guid;
+    }
+
+    [JSInvokable]
+    public async Task<Guid> AddRectangleFromDrawingManager()
+    {
+        var guid = Guid.NewGuid();
+        Rectangles.Add(new() { Id = guid, Options = null });
+
+        return guid;
+    }
+
+
+
+
+    private async void SetMapEventListeners()
+    {
+        var result = await JS.InvokeAsync<string>("setMapEventListeners", MapId);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        await Task.Delay(1);
+        InitializeMap();
+    }
+}
