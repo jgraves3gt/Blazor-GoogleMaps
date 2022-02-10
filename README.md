@@ -26,6 +26,7 @@
 3. It is recommended to create a `Map` reference in your blazor code to perform any operations against the map instance. 
       1. (ie. `<Map @ref="MapItem">` and then in your code `private Map MapItem { get; set; }`)
 4. The following table describes the events that can be subscribed to on the `Map` instance and their argument types. Note that many of these events are fired when map elements are interacted with, such as a map marker, however all of these events are subscribed to via the `Map` component, and the relevant map elements are returned within the event arguments.
+    1. More in depth documentation is given about these events in Google's official documentation [Here](https://developers.google.com/maps/documentation/javascript/reference)
 ### Map Events
 | Event | Arg Type | Arg Description | Example |
 |-------|----------|-----------------|---------|
