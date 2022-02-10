@@ -22,5 +22,6 @@
 ---
 1. Add the following component tag wherever you want to provide a map. `<Map></Map>`
 2. The `<Map>` Component requires an Id by providing the `MapId="{Map Id Here}"` attribute. This should be a unique identifier and allows you to place multiple `<Map>` components on the same page at a time. 
-3. It is recommended to create a `Map` reference in your blazor code to perform any operations against the map instance. (ie. `<Map @ref="MapItem">` and then in your code `private Map MapItem { get; set; }`)
+3. It is recommended to create a `Map` reference in your blazor code to perform any operations against the map instance. 
+      i. (ie. `<Map @ref="MapItem">` and then in your code `private Map MapItem { get; set; }`)
 
