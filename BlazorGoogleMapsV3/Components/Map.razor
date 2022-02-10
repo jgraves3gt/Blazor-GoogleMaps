@@ -37,6 +37,8 @@
     [Parameter]
     public EventCallback<MapLatLng> Map_RightClick { get; set; }
     [Parameter]
+    public EventCallback<MapLatLng> Map_ContextMenu { get; set; }
+    [Parameter]
     public EventCallback Map_BoundsChanged { get; set; }
     [Parameter]
     public EventCallback Map_CenterChanged { get; set; }
@@ -366,6 +368,12 @@
     public async Task MapRightClicked(double lat, double lon)
     {
         await Map_RightClick.InvokeAsync(new MapLatLng() { lat = lat, lng = lon });
+    }
+    
+    [JSInvokable]
+    public async Task MapContextMenu(double lat, double lon)
+    {
+        await Map_ContextMenu.InvokeAsync(new MapLatLng() { lat = lat, lng = lon });
     }
 
     [JSInvokable]

@@ -692,8 +692,11 @@ function setMapEventListeners(MapId) {
     });
 
     map.addListener("rightclick", (mapsMouseEvent) => {
-        console.log("Right Clicked From JS");
         DNMapRef.invokeMethodAsync('MapRightClicked', mapsMouseEvent.latLng.lat(), mapsMouseEvent.latLng.lng());
+    });
+
+    map.addListener("contextmenu", (mapsMouseEvent) => {
+        DNMapRef.invokeMethodAsync('MapContextMenu', mapsMouseEvent.latLng.lat(), mapsMouseEvent.latLng.lng());
     });
 
     map.addListener("mousemove", (mapsMouseEvent) => {
