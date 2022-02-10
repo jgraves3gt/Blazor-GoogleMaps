@@ -4,6 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Blazor_GoogleMaps</RootNamespace>
     <AssemblyName>Blazor-GoogleMaps</AssemblyName>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.1</AssemblyVersion>
+    <FileVersion>1.0.1.1</FileVersion>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

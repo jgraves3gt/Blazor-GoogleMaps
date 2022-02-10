@@ -8,7 +8,7 @@
 ## Getting Started
 ---
 1. Add the Nuget package to your project
-      - `PM> Install-Package {PACKAGE NAME}`
+      - `PM> Install-Package BlazorGoogleMapsV3 -Version 1.1.0`
 2. After adding the Nuget Package to your solution, add the following `<script>` tags to your `index.html` or `_host.cshtml`
       - `<script src="https://maps.googleapis.com/maps/api/js?key={YOUR_KEY_HERE}&libraries=drawing,geometry"></script>`
       - It is recommended to add the `drawing` and `geometry` libraries as many of these features are implemented in this component.   
@@ -22,6 +22,7 @@
 ---
 1. Add the following component tag wherever you want to provide a map. `<Map></Map>`
 2. The `<Map>` Component requires an Id by providing the `MapId="{Map Id Here}"` attribute. This should be a unique identifier and allows you to place multiple `<Map>` components on the same page at a time. 
+    1. The `<Map>` component will fill the available space in its container. If you wish to keep it to a specific size, enclose it in a `<div>` element set to the desired size.
 3. It is recommended to create a `Map` reference in your blazor code to perform any operations against the map instance. 
       1. (ie. `<Map @ref="MapItem">` and then in your code `private Map MapItem { get; set; }`)
 4. The following table describes the events that can be subscribed to on the `Map` instance and their argument types. Note that many of these events are fired when map elements are interacted with, such as a map marker, however all of these events are subscribed to via the `Map` component, and the relevant map elements are returned within the event arguments.
