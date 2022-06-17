@@ -27,6 +27,10 @@
       1. (ie. `<Map @ref="MapItem">` and then in your code `private Map MapItem { get; set; }`)
 4. The following table describes the events that can be subscribed to on the `Map` instance and their argument types. Note that many of these events are fired when map elements are interacted with, such as a map marker, however all of these events are subscribed to via the `Map` component, and the relevant map elements are returned within the event arguments.
     1. More in depth documentation is given about these events in Google's official documentation [Here](https://developers.google.com/maps/documentation/javascript/reference)
+5. To initialize the map to start at a specific location, you need to provide the `MapOptions` to the `Map` component. This `Map` component accepts an `object` type for the `MapOptions` so that you can provide your own implementation of the options. As long as you follow the same structure as is outlined in the official Google documentation (link provided in the previous step), then you shouldn't have any issues. However I have created a class called `MapOptions` that you can use. It has several commonly used values by default, but they can be reassigned however you would like. If you would like to programatically move the map to an new location, simply create a new instance of the `MapOptions` and assign it to the `Map` reference's `MapOptions` property.
+      1. An example of creating your own `MapOptions` could look something like this:
+      2. `var _mapOptions = new { center = new MapLatLng { lat = 41.739081, lng = -111.834756 }, zoom = 15, tilt = 0 };`
+      3. Then assign this to the `Map` reference and you should be good to go.
 ### Map Events
 | Event | Arg Type | Arg Description | Example |
 |-------|----------|-----------------|---------|
