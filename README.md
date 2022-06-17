@@ -121,7 +121,7 @@
 | Rectangle_Click | MapElementMouseEvent | The rectangle Id and coordinates | `Rectangle_Click="(e) => RectangleClick((MapElementMouseEvent)e)"` |
 | Rectangle_DoubleClick | MapElementMouseEvent | The rectangle Id and coordinates | `Rectangle_DoubleClick="(e) => RectangleDoubleClick((MapElementMouseEvent)e)"` |
 | Rectangle_Drag | MapElementMouseEvent | The rectangle Id and coordinates | `Rectangle_Drag="(e) => RectangleDrag((MapElementMouseEvent)e)"` |
-| Rectangle_DragEnd | MapElementMouseEvent | The rectangle Id and coordinates | `Rectangle_DragEnd="(e) => Rectangl_DragEnd((MapElementMouseEvent)e)"` |
+| Rectangle_DragEnd | MapElementMouseEvent | The rectangle Id and coordinates | `Rectangle_DragEnd="(e) => Rectangle_DragEnd((MapElementMouseEvent)e)"` |
 | Rectangle_DragStart | MapElementMouseEvent | The rectangle Id and coordinates | `Rectangle_DragStart="(e) => RectangleDragStart((MapElementMouseEvent)e)"` |
 | Rectangle_MouseDown | MapElementMouseEvent | The rectangle Id and coordinates | `Rectangle_MouseDown="(e) => RectangleMouseDown((MapElementMouseEvent)e)"` |
 | Rectangle_MouseMove | MapElementMouseEvent | The rectangle Id and coordinates | `Rectangle_MouseMove="(e) => RectangleMouseMove((MapElementMouseEvent)e)"` |
