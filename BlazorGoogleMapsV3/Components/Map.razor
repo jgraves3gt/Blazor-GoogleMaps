@@ -256,6 +256,12 @@
         SetMapEventListeners();
     }
 
+    public async void SetOptions(object options)
+    {
+        MapOptions = options;
+        await JS.InvokeVoidAsync("setMapOptions", MapId, options);
+    }
+
     public MapMarker GetMarker(Guid Id)
     {
         return Markers.FirstOrDefault(m => m.Id == Id);
@@ -286,6 +292,46 @@
     public async void UpdatePolygon(Guid Id, MapPolygonOptions options)
     {
         await JS.InvokeVoidAsync("updateMapPolygon", Id, options);
+    }
+
+    public async Task<MapLatLng> GetCenter()
+    {
+        return await JS.InvokeAsync<MapLatLng>("getMapCenter", MapId);
+    }
+
+    public async void MoveCamera(MapCameraOptions options)
+    {
+        await JS.InvokeVoidAsync("moveCamera", MapId, options);
+    }
+
+    public async void SetCenter(MapLatLng center)
+    {
+        await JS.InvokeVoidAsync("setCenter", MapId, center);
+    }
+
+    public async void SetHeading(double heading)
+    {
+        await JS.InvokeVoidAsync("setHeading", MapId, heading);
+    }
+
+    public async void SetTilt(double tilt)
+    {
+        await JS.InvokeVoidAsync("setTilt", MapId, tilt);
+    }
+
+    public async void SetZoom(double zoom)
+    {
+        await JS.InvokeVoidAsync("setZoom", MapId, zoom);
+    }
+
+    public async void PanBy(double x, double y)
+    {
+        await JS.InvokeVoidAsync("panBy", MapId, x, y);
+    }
+
+    public async void PanTo(MapLatLng position)
+    {
+        await JS.InvokeVoidAsync("panTo", MapId, position);
     }
 
     public async void StartDrawing(object options = null)

@@ -28,6 +28,105 @@ function initMap(mapId, DNMapRef, mapOptions) {
     }
 }
 
+function setMapOptions(mapId, mapOptions) {
+    try {
+        var map = maps[mapId];
+
+        map.setOptions(mapOptions);
+    }
+    catch (e) {
+        console.log("Unable to update Map Options. Error: " + e);
+    }
+}
+
+function getMapCenter(mapId) {
+    try {
+        var map = maps[mapId];
+
+       return map.getCenter();
+    }
+    catch (e) {
+        console.log("Unable to get Map Center. Error: " + e);
+    }
+}
+
+function moveCamera(mapId, options) {
+    try {
+        var map = maps[mapId];
+
+        map.moveCamera(options);
+    }
+    catch (e) {
+        console.log("Unable to move Camera. Error: " + e);
+    }
+}
+
+function panBy(mapId, x, y) {
+    try {
+        var map = maps[mapId];
+
+        map.panBy(x,y);
+    }
+    catch (e) {
+        console.log("Unable to Pan. Error: " + e);
+    }
+}
+
+function panTo(mapId, latLng) {
+    try {
+        var map = maps[mapId];
+
+        map.panTo(latLng);
+    }
+    catch (e) {
+        console.log("Unable to Pan. Error: " + e);
+    }
+}
+
+function setCenter(mapId, latLng) {
+    try {
+        var map = maps[mapId];
+
+        map.setCenter(latLng);
+    }
+    catch (e) {
+        console.log("Unable to Set Center. Error: " + e);
+    }
+}
+
+function setHeading(mapId, heading) {
+    try {
+        var map = maps[mapId];
+
+        map.setHeading(heading);
+    }
+    catch (e) {
+        console.log("Unable to Set Heading. Error: " + e);
+    }
+}
+
+function setTilt(mapId, tilt) {
+    try {
+        var map = maps[mapId];
+
+        map.setTilt(tilt);
+    }
+    catch (e) {
+        console.log("Unable to Set Tilt. Error: " + e);
+    }
+}
+
+function setZoom(mapId, zoom) {
+    try {
+        var map = maps[mapId];
+
+        map.setZoom(zoom);
+    }
+    catch (e) {
+        console.log("Unable to Set Zoom. Error: " + e);
+    }
+}
+
 function startDrawing(mapId, drawingOptions) {
     var drawManager = drawingManagers[mapId];
 
