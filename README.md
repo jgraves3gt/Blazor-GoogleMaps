@@ -31,6 +31,7 @@
       1. An example of creating your own `MapOptions` could look something like this:
       2. `var _mapOptions = new { center = new MapLatLng { lat = 41.739081, lng = -111.834756 }, zoom = 15, tilt = 0 };`
       3. Then assign this to the `Map` reference and you should be good to go.
+
 ### Map Events
 | Event | Arg Type | Arg Description | Example |
 |-------|----------|-----------------|---------|
@@ -158,3 +159,21 @@
 | InfoWindow_PositionChanged | MapInfoWindow | The info window that was changed | `InfoWindow_PositionChanged="(e) => InfoWindowPositionChanged((MapInfoWindow)e)"` |
 | InfoWindow_ZIndexChanged | MapInfoWindow | The info window that was changed | `InfoWindow_ZIndexChanged="(e) => InfoWindowZIndexChanged((MapInfoWindow)e)"` |
 
+
+
+## Release Notes
+---
+
+### Version 1.2.0
+1. Fix for setting MapOptions.
+      1. The Map would not initialize if you set the MapOptions, so a new method was added to the `<Map>` component called `SetOptions` that takes an object type as a parameter and will set the options.
+2. Added more methods for adjusting and moving the map.
+      1. Added the following methods: 
+            1. `public async void MoveCamera(MapCameraOptions options)`
+            2. `public async void SetCenter(MapLatLng center)`
+            3. `public async Task<MapLatLng> GetCenter()`
+            4. `public async void SetHeading(double heading)`
+            5. `public async void SetTilt(double tilt)`
+            6. `public async void SetZoom(double zoom)`
+            7. `public async void PanBy(double x, double y)`
+            8. `public async void PanTo(MapLatLng position)`
